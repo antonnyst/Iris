@@ -1,5 +1,5 @@
 # --- Build Node ---
-FROM rust:slim-bullseye AS Builder
+FROM docker.io/rust:slim-bullseye AS Builder
 LABEL org.opencontainers.image.authors="https://github.com/seppi91"
 ARG TARGETPLATFORM
 ARG TARGETARCH
@@ -53,7 +53,7 @@ RUN export CSOUND_LIB_DIR="/usr/lib/$(uname -m)-linux-gnu" \
 
 
 # --- Release Node ---
-FROM debian:bullseye-slim as Release
+FROM docker.io/debian:bullseye-slim as Release
 
 # Switch to the root user while we do our changes
 USER root
