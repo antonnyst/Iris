@@ -123,8 +123,8 @@ jobs:
       - name: Image digest
         run: echo ${{ steps.docker_build.outputs.digest }}
 
-  deploy_image:
-    name: 'Publish: DockerHub'
+  deploy_image_debian:
+    name: 'Publish: Debian to DockerHub'
     runs-on: ubuntu-latest
     needs: [jest, tox]
     if: github.event_name == 'release' || github.ref == 'refs/heads/develop' || github.ref == 'refs/heads/master'
@@ -170,5 +170,56 @@ jobs:
         with:
           push: true
           platforms: linux/amd64,linux/arm64
+          tags: ${{ steps.release_meta.outputs.tags || steps.edge_meta.outputs.tags }}
+          labels: ${{ steps.release_meta.outputs.labels || steps.edge_meta.outputs.tags }}
+
+  deploy_image_alpine:
+    name: 'Publish: Alpine to DockerHub'
+    runs-on: ubuntu-latest
+    needs: [jest, tox]
+    if: github.event_name == 'release' || github.ref == 'refs/heads/develop' || github.ref == 'refs/heads/master'
+    steps:
+      - name: Set up QEMU
+        uses: docker/setup-qemu-action@v1
+
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v1
+
+      - name: Extract branch name
+        shell: bash
+        run: echo "##[set-output name=branch;]$(echo ${GITHUB_REF#refs/heads/})"
+        id: extract_branch
+
+      - name: Generating release tags and labels
+        if: github.event_name == 'release'
+        id: release_meta
+        uses: docker/metadata-action@v4
+        with:
+          images: jaedb/iris
+          tags: |
+            latest-alpine
+            type=semver,pattern={{version}}-alpine
+            type=semver,pattern={{major}}.{{minor}}-alpine
+
+      - name: Generating edge branch labels
+        if: github.ref == 'refs/heads/develop' || github.ref == 'refs/heads/master'
+        id: edge_meta
+        uses: docker/metadata-action@v4
+        with:
+          images: jaedb/iris
+          tags: ${{ steps.extract_branch.outputs.branch }}
+
+      - name: Login to DockerHub
+        uses: docker/login-action@v1 
+        with:
+          username: ${{ secrets.DOCKERHUB_USERNAME }}
+          password: ${{ secrets.DOCKERHUB_TOKEN }}
+
+      - name: Build and push
+        uses: docker/build-push-action@v2
+        with:
+          push: true
+          platforms: linux/amd64,linux/arm64
+          file: "{{context}}/Dockerfile.alpine"
           tags: ${{ steps.release_meta.outputs.tags || steps.edge_meta.outputs.tags }}
           labels: ${{ steps.release_meta.outputs.labels || steps.edge_meta.outputs.tags }}
