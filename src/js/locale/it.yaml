@@ -58,13 +58,17 @@ common:
   filter: Filtra
   by: ' per '
   loading_library: 'Caricamento %{provider} %{type}'
+  play_state:
+    playing: In riproduzione
+    paused: In pausa
+    stopped: Fermato
+    idle: Riposo
 fields:
   start_typing: 'Inizia a digitare...'
   search: 'Cerca...'
   sort: Ordina
   view: Vista
   source: Fonte
-  uri: URI
   items_to_add:
     label: Elementi da aggiungere
     placeholder: Nessun elemento
@@ -76,7 +80,6 @@ fields:
     as_loaded: Come caricato
     name: Nome
     artist: Artista
-    album: Album
     updated: Aggiornato
     tracks: Tracce
     source: Fonte
@@ -117,34 +120,26 @@ specs:
   playlists: '%{count} playlist'
   plays: '%{count} riproduzioni'
   popularity: '%{percent}% popolarità'
-  added: 'Aggiunto '
+  added_from: 'Aggiunto da '
+  added_by: 'Aggiunto da %{by}'
   added_ago: 'Aggiunto %{time} fa'
   edited: 'Modificato '
   edited_ago: 'Modificato %{time} fa'
   played_ago: 'Riprodotto %{time} fa'
 services:
+  restore_defaults: Ripristina predefinite
   mopidy:
-    title: Mopidy
     local: Locale
     adding_uris: 'Aggiunta di %{count} URI'
     adding_uris_broadcast: '%{username} sta aggiungendo %{count} URI'
     searching: 'Ricerca su %{provider} %{type}'
     searching_providers: 'Ricerca su %{count} provider Mopidy'
     loading_albums: 'Caricamento di %{count} album locali'
-  spotify:
-    title: Spotify
-  pusher:
-    title: Pusher
-  snapcast:
-    title: Snapcast
+    loading_artwork: 'Caricamento copertine'
   genius:
-    title: Genius
-    switch_lyrics_result: Consulta altri risultati per i testi 
+    switch_lyrics_result: Consulta altri risultati per i testi
     want_lyrics: 'Desideri i testi delle tracce? Autorizza Genius '
-  google:
-    title: Google
   lastfm:
-    title: LastFM
     love: Mi piace
     unlove: Non mi piace
 
@@ -155,7 +150,7 @@ sidebar:
   now_playing: Ora in riproduzione
   search: Cerca
   discover: Scopri
-  genre: Genere / Umore
+  moods: Genere / Umore
   featured_playlists: Playlist in primo piano
   new_releases: Nuove uscite
   my_music: La mia musica
@@ -165,12 +160,14 @@ sidebar:
   tracks: Tracce
   browse: Sfoglia
   settings: Impostazioni
+  servers: Server
   not_connected: '%{name} non connesso'
-  browser_offline: Sfoglia offline
+  browser_offline: Non in linea
   update_available: Aggiornamento disponibile
 context_menu:
   add_to_playlist:
     title: Aggiungi alla playlist
+    new_playlist: Crea playlist
     no_playlists: Nessuna playlist scrivibile
   play_next: Riproduci successivo
   play_top_tracks: Riproduci tracce migliori
@@ -181,13 +178,14 @@ context_menu:
   unpin: Non fissare
   go_to_artist: Vai all'artista
   go_to_user: Vai all'utente
+  go_to_track: Vai alla traccia
   track_info: Dettagli traccia
   discover_similar: Scopri simili
   start_radio: Avvia radio
   copy_uri: Copia URI
   refresh: Aggiorna
 playback_controls:
-  consume: Consume
+  consume: Consuma
   shuffle: Casuale
   repeat: Ripeti
   no_outputs: Nessuna uscita
@@ -196,23 +194,26 @@ playback_controls:
 snapcast:
   enabled: Abilitato
   streaming_enabled: Streaming abilitato
+  stream_on_this_device: Stream su questo dispositivo
   show_disconnected_clients: Mostra client disconnessi
   no_connected_clients: Nessun client connesso
-  host: Host
   port: Porta
   name: Nome
   name_disconnected: Nome (disconnesso)
   group: Gruppo
   new_group: '+ Nuovo gruppo'
   latency: Latenza
-  stream: Stream
-  volume: Volume
+  not_controllable: Non controllabile
+  encryption:
+    label: Crittografia
+    sublabel: Usa SSL
+    description: Richiede un proxy SSL
+    incompatible: ' (necessario quando ci si connette da una sessione HTTPS del browser)'
 authentication:
   popup_blocked: Popup bloccato. Permetti i popup e riprova.
   failed: Autorizzazione fallita. %{origin} non è l'url di autorizzazione configurato.
   log_out: Esci
   log_in: Accedi
-
 
 ##
 # Views
@@ -220,16 +221,13 @@ authentication:
 now_playing:
   title: Ora in riproduzione
   context_actions:
-    radio: Radio
     history: Cronologia
     add_uri: Aggiungi URI
   current_track:
     playing_from: Riprodotto da
     shuffle: Casuale
     clear: Pulisci
-    radio: Radio
 album:
-  title: Album
   title_window: '%{name} di %{artist} (album)'
   wiki:
     title: Informazioni
@@ -254,7 +252,6 @@ artist:
     sort:
       disc_track: Numero traccia
       name: Nome
-      album: Album
   related_artists:
     title: Artisti correlati
   about:
@@ -275,12 +272,12 @@ artist:
       singles: Singoli
       compilations: Compilation
 debug:
-  title: Debug
+  title: Diagnostica
   ui:
     title: Interfaccia utente
   debug:
-    title: Debug
-    overlay: Mostra superfici di debug
+    title: Diagnostica
+    overlay: Mostra superfici di diagnostica
   logging:
     title: Registro
     mopidy: Registro Mopidy
@@ -294,18 +291,16 @@ debug:
   data: Dati
   examples: Esempi
 playlist:
-  title: Playlist
   title_window: '%{name} (playlist)'
   title_plural: Playlist
   tracks:
     title: Tracce
     sort:
       default: Predefinito
-      sort_id: As loaded
-      added_at: Date added
+      sort_id: Come caricato
+      added_at: Data di aggiunta
       name: Nome
       artist: Artista
-      album: Album
 queue_history:
   title: Cronologia riproduzione
 search:
@@ -315,6 +310,7 @@ search:
     sort: Ordina
     source: 'Fonti (%{count})'
   placeholder: Cerca
+  no_results: Nessun risultato
   all:
     title: Tutto
   artists:
@@ -333,15 +329,16 @@ track:
   title_window: '%{name} di %{artists} (track)'
   lyrics_origin: 'Origine: '
   explicit: Contenuto esplicito
+  unplayable: Non riproducibile
   disc_number: 'Disco %{number}'
   track_number: 'Traccia %{number}'
   unknown_album: Album sconosciuto
   want_lyrics: 'Desideri il testo delle tracce? Autorizza Genius sotto '
+  lyrics: Testi
 settings:
   title: Impostazioni
   help: Aiuto
   server:
-    title: Server
     username:
       label: Nome utente
       description: Una stringa non univoca usata per identificare questo client (no caratteri speciali)
@@ -360,17 +357,20 @@ settings:
       clear_tracklist: Pulisci lista tracce alla riproduzione di URI
       clear_tracklist_tooltip: La riproduzione di uno o più URI cancellerà la coda di riproduzione corrente
       hotkeys: Abilita scorciatoie da tastiera
-      smooth_scrolling: Abilita scorrimento fluido
       touch_events: Abilita tocco sui controlli di riproduzione
       touch_events_tooltip: Consenti scorrimento a sinistra e destra per cambiare traccia
-      wide_scrollbars: Usa barra di scorrimento larga
       grid_glow: Effetto bagliore miniature
       grid_glow_tooltip: Disattiva l'effetto per dispositivi poco potenti o browser non recenti
+    scrolling:
+      label: Scorrimento
+      wide: Barra di scorrimento larga
+      hidden: Barra di scorrimento nascosta
+      smooth_scrolling: Abilita scorrimento fluido
     reporting:
       label: Segnalazione
       sublabel: Consenti statistiche di utilizzo anonime
       description: 'I dati di utilizzo anonimi sono importanti per identificare errori e potenziali funzionalità per migliorare Iris. Vuoi saperne di più? Leggi il '
-      privacy_policy: policy di riservatezza
+      privacy_policy: informativa sulla privacy
       are_you_sure: Sei sicuro di non voler inviare segnalazioni?
     commands:
       label: Comandi
@@ -393,7 +393,10 @@ settings:
       upgrade_available: 'Aggiornamento disponibile (%{version})'
       upgrade: 'Aggiorna a %{version}'
       up_to_date: Aggiornato
-    share_configuration: Condividi configurazione
+    shared_configuration:
+      label: Condividi configurazione
+      share: Esporta/condividi
+      import: Importa da server
     restart: Riavvia server
     reset: Azzera impostazioni
   about:
@@ -401,24 +404,24 @@ settings:
     blurb_1: ' è un progetto open-source di '
     blurb_2: '. Viene fornito gratuitamente e senza alcuna garanzia. Se hai pagato qualcuno per questo software, fammelo sapere.'
     donate: Dona
-    github: GitHub
   pusher_connection_list:
     not_connected: Non connesso
     no_connections: Nessuna connessione
     you: ' (tu)'
   servers:
+    current_track: Traccia corrente
     inactive: Non attivo
     connecting: In connessione
     disconnected: Disconnesso
     connected: Connesso
     new_server: Nuovo server
     name: Nome
-    host: Host
     port: Porta
     encryption:
       label: Crittografia
       sublabel: Usa SSL
       description: Richiede un proxy SSL
+      incompatible: ' (necessario quando ci si connette da una sessione HTTPS del browser)'
     switch: Passa a questo server
     reconnect: Riconnetti
   services:
@@ -448,13 +451,10 @@ user:
   title_window: '%{name} (user)'
   you: Tu
 discover:
-  title: Discover
-  categories:
+  title: Scopri
+  moods:
     title: 'Genere / Umore'
-  category:
-    title: 'Genere / Umore'
-    category: Categoria
-  featured:
+  featured_playlists:
     title: Playlist in primo piano
   new_releases:
     title: Nuove uscite
@@ -498,17 +498,18 @@ modal:
   edit_playlist:
     title: Modifica playlist
     title_create: Crea playlist
+    subtitle: 'E aggiungi %{count} elemento%{plural}'
     name_required: Nome richiesto
     name: Nome
     description: Descrizione
-    provider: Provider
+    provider: Fornitore
     image:
       label: Copertina
       description: Solo JPEG, max 256kB. Lascia vuoto per non modificare la copertina.
     options:
       label: Opzioni
-      public: Pubblico
-      collaborative: Collaborativo
+      public: Pubblica
+      collaborative: Collaborativa
     create_playlist: Crea playlist
   edit_command:
     title: Modifica comando
@@ -516,15 +517,11 @@ modal:
     name: Nome
     colour: Colore
     icon: Icona
-    url: URL
     method:
       label: Metodo
-      get: GET
-      post: POST
     data: Dati
     headers: Header aggiuntivi
   edit_radio:
-    title: Radio
     subtitle: Aggiungi e rimuovi fonti per modellare il suono della tua radio. La radio utilizza il motore di consigli di Spotify per suggerire tracce simili alle tue.
     invalid_seed_uri: URI elemento non valido
     too_many_seeds: Più di 5 elementi forniti, superflui ignorati
@@ -538,23 +535,45 @@ modal:
     title: Ora in riproduzione
     title_window: '%{name} di %{artist} (ora in riproduzione)'
     lyrics: Testi
-  share_configuration:
-    title: Condividi configurazione
-    subtitle: Push your authorizations and interface settings to another, connected user
+  import_configuration:
+    title: Importa configurazione
+    configurations: Configurazione da importare
+    import_now: Importa ora
+  shared_config:
     no_peers: Nessun nodo connesso
     recipients: Destinatari
     configurations: Configurazioni
-    authorization: 'Autorizzazione %{service}'
-    logged_in_as: 'Accesso effettuato come %{name}'
-    snapcast_description: Dettagli connessione server
-    interface: Impostazioni interfaccia
-    interface_description: Tema, ordinamento, filtri, altro
-    import:
-      title: Configurazione condivisa
-      subtitle: 'Un altro utente ha condiviso la sua configurazione con te. Ciò include:'
-      do_you_want_to_import: Vuoi importarla?
-      import_now: Importa ora
-      successful: Importazione avvenuta con successo
+    import_now: Importa ora
+    imported: Importata con successo
+    share: Condividi ora
+    shared: Condivisa con successo
+    push:
+      title: Condividi configurazione
+      subtitle: Push your authorizations and interface settings to another, connected user
+    pushed:
+      title: Configurazione ricevuta
+      subtitle: Another user has shared their configuration with you
+    server:
+      title: Importa configurazione
+      subtitle: Import third-party authorizations and other settings
+      label: Server
+      description: Save to server for any user to import
+    config:
+      label: Configurazioni
+      ui:
+        label: Interfaccia utente
+        description: Tema, ordinamento, filtri, altro
+      spotify:
+        label: Autorizzazione Spotify
+        description: 'Accesso effettuato come %{name}'
+      lastfm:
+        label: Autorizzazione LastFM
+        description: 'Accesso effettuato come %{name}'
+      genius:
+        label: Autorizzazione Genius
+        description: 'Accesso effettuato come %{name}'
+      snapcast:
+        description: Dettagli connessione server
   reset:
     title: Azzera Iris
     subtitle: Pulisci la tua configurazione locale, informationi memoria o cache
@@ -563,7 +582,6 @@ modal:
       label: Preferenze
       description: Personalizzazione interfaccia
     database:
-      label: Database
       description: Database locale di librerie e risorse basato su browser
     service_worker:
       label: Esecutore di Servizio
@@ -574,3 +592,27 @@ modal:
     test_mode:
       label: Modalita Test
       description: Registro dettagliato per risoluzione problemi
+  hotkeys_info:
+    title: Tasti rapidi
+    keys:
+      info: Dettagli sui tasti rapidi (questa finestra di dialogo)
+      now_playing: In riproduzione
+      search: Cerca
+      kiosk_mode: Modalità chiosco
+      exit: Annulla interazione corrente
+      play_pause: Riproduci/pausa
+      stop: Ferma
+      next: Traccia successiva
+      previous: Traccia precedente
+      rewind: Dietro di 30 secondi
+      fastforward: Avanti di 30 secondi
+      volume_up: Aumenta volume del 5%
+      volume_down: Riduci volume del 5%
+      mute: Muto
+      snapcast_volume_up: Aumenta volume per client Snapcast (con n compreso tra 1-9)
+      snapcast_volume_down: Riduci volume per client Snapcast (con n compreso tra 1-9)
+      snapcast_mute: Muto per client Snapcast (con n compreso tra 1-9)
+  servers:
+    title: Selettore server
+    current: Server corrente
+    nothing_playing: Niente in riproduzione
