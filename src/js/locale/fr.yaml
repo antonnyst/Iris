@@ -169,7 +169,7 @@ sidebar:
   now_playing: Lecture en cours
   search: Rechercher
   discover: Découvrir
-  genre: Genre
+  moods: Genre
   featured_playlists: Liste de lecture en vedette
   new_releases: Nouveautés
   my_music: Ma musique
@@ -213,6 +213,7 @@ playback_controls:
 snapcast:
   enabled: Activé
   streaming_enabled: Diffusion du flux active
+  stream_on_this_device: Diffusion sur cet appareil
   show_disconnected_clients: Montrer les clients déconnectés
   no_connected_clients: Pas de client connecté
   host: Hôte
@@ -338,6 +339,7 @@ search:
     sort: Trier
     source: 'Sources (%{count})'
   placeholder: Rechercher
+  no_results: Aucun résultat
   all:
     title: Tous
   artists:
@@ -431,7 +433,7 @@ settings:
     title: À propos
     blurb_1: ' est un projet libre développé par '
     blurb_2: ". Il est fourni gratuitement et sans aucune garantie. Si vous avez payé quelqu'un pour ce logiciel, veuillez me le faire savoir."
-    donate: Donner
+    sponsor: Soutenir financièrement
     github: GitHub
   pusher_connection_list:
     not_connected: Déconnecté
