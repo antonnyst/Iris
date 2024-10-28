@@ -13,6 +13,7 @@ RUN echo "http://dl-cdn.alpinelinux.org/alpine/edge/testing" >> /etc/apk/reposit
   shadow \
   sudo \
   git \
+  alsa-utils \
   py3-pip \
   mopidy \
   py3-mopidy-spotify
