@@ -27,6 +27,8 @@ const SearchResults = ({
   const encodedTerm = encodeURIComponent(term);
   let results = [...rawResults];
 
+  console.log("TEST! " + sortReverse);
+
   results = sortItems(
     results,
     (type === 'tracks' && sortField === 'followers' ? 'popularity' : sortField),
