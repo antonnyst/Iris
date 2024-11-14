@@ -70,6 +70,7 @@ const Search = () => {
   }
 
   const sortOptions = [
+    { value: null, label: i18n('fields.filters.as_loaded') },
     { value: 'name', label: i18n('common.name') },
     { value: 'uri', label: i18n('fields.filters.source') },
     { value: 'followers', label: i18n('common.popularity') },

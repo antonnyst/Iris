@@ -27,11 +27,13 @@ const SearchResults = ({
   const encodedTerm = encodeURIComponent(term);
   let results = [...rawResults];
 
-  results = sortItems(
-    results,
-    (type === 'tracks' && sortField === 'followers' ? 'popularity' : sortField),
-    sortReverse,
-  );
+  if (sortField) {
+    results = sortItems(
+      results,
+      (type === 'tracks' && sortField === 'followers' ? 'popularity' : sortField),
+      sortReverse,
+    );
+  }
 
   const resultsCount = results.length;
   if (all && type !== 'tracks' && results.length > 5) {
