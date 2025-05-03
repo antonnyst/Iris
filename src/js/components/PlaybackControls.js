@@ -195,20 +195,21 @@ const PlaybackControls = () => {
         </button>
         <OutputControl force_expanded={expanded} />
       </section>
-
-      <section className="volume">
-        <MuteControl
-          mute={mute}
-          onMuteChange={(value) => dispatch(mopidyActions.setMute(value))}
-        />
-        <VolumeControl
-          scrollWheel
-          volume={volume}
-          mute={mute}
-          onVolumeChange={(value) => dispatch(mopidyActions.setVolume(value))}
-        />
-      </section>
-
+      {
+        volume !== null &&
+          <section className="volume">
+            <MuteControl
+              mute={mute}
+              onMuteChange={(value) => dispatch(mopidyActions.setMute(value))}
+            />
+            <VolumeControl
+              scrollWheel
+              volume={volume}
+              mute={mute}
+              onVolumeChange={(value) => dispatch(mopidyActions.setVolume(value))}
+            />
+          </section>
+      }
       <section className="triggers">
         <button
           type="button"
