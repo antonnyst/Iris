@@ -1,6 +1,6 @@
 # --- Build Node ---
 FROM docker.io/rust:slim-bookworm AS Builder
-LABEL org.opencontainers.image.authors="https://github.com/seppi91"
+LABEL org.opencontainers.image.authors="https://github.com/jaedb"
 ARG TARGETPLATFORM
 ARG TARGETARCH
 ARG TARGETVARIANT
@@ -32,11 +32,9 @@ RUN apt update \
 WORKDIR /usr/src/gst-plugins-rs
 
 # Clone source of gst-plugins-rs to workdir
-ARG GST_PLUGINS_RS_TAG=0.12.2
 RUN git clone -c advice.detachedHead=false \
 	--single-branch --depth 1 \
-	--branch ${GST_PLUGINS_RS_TAG} \
-	https://gitlab.freedesktop.org/gstreamer/gst-plugins-rs.git ./
+	https://gitlab.freedesktop.org/kingosticks/gst-plugins-rs ./
 
 # Build GStreamer plugins written in Rust (optional with --no-default-features)
 ENV DEST_DIR /target/gst-plugins-rs
