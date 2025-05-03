@@ -52,7 +52,7 @@ jobs:
             tox: flake8
 
     name: ${{ matrix.name }}
-    runs-on: ubuntu-20.04
+    runs-on: ubuntu-latest
     container: ghcr.io/mopidy/ci:7
     steps:
       - name: Checkout code
